@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>陳祖旋 Sophia Chen - UDM ESG 電子名片</title>
+    <style>
+        :root {
+            --primary-blue: #1a4a9e; 
+            --accent-gold: #bfa36a;   
+            --text-dark: #2c3e50;
+            --text-gray: #7f8c8d;
+            --card-width: 420px;
+            --card-height: 250px;
+        }
+
+        body {
+            font-family: 'SF Pro TC', 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif;
+            background-color: #f0f3f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            perspective: 1500px;
+        }
+
+        .card-perspective {
+            width: var(--card-width);
+            height: var(--card-height);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .card-perspective.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            box-sizing: border-box;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+
+        /* --- 正面 FRON FACE --- */
+        .card-front {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-front::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 100%;
+            background: var(--primary-blue);
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+        }
+
+        .logo-container img {
+            height: 45px;
+            width: auto;
+        }
+
+        .header-section {
+            margin-bottom: 25px;
+            margin-left: 10px;
+        }
+
+        .name-block {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .name-zh {
+            font-size: 26px;
+            font-weight: bold;
+            color: var(--text-dark);
+            letter-spacing: 1.5px;
+        }
+
+        .name-en {
+            font-size: 16px;
+            color: var(--primary-blue);
+            margin-left: 10px;
+            font-weight: 500;
+        }
+
+        .title-block {
+            font-size: 14px;
+            color: var(--text-gray);
+            letter-spacing: 1px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .divider-front {
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-blue);
+            margin-bottom: 20px;
+            margin-left: 10px;
+        }
+
+        .info-section {
+            margin-left: 10px;
+            font-size: 13px;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .info-row { display: flex; align-items: center; }
+        .label { font-weight: bold; color: var(--primary-blue); width: 65px; display: inline-block; }
+        .ext { color: var(--text-gray); font-size: 11px; margin-left: 5px;}
+
+        /* --- 反面 BACK FACE --- */
+        .card-back {
+            transform: rotateY(180deg);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .back-company-info {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .company-name-en-big {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-blue);
+            letter-spacing: 1px;
+        }
+
+        .company-name-zh {
+            font-size: 13px;
+            color: var(--text-dark);
+        }
+
+        .qr-block {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 75px;
+            height: 75px;
+            padding: 5px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .qr-block img { max-width: 100%; height: auto; }
+
+        .back-details {
+            font-size: 11px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .label-b { color: var(--primary-blue); font-weight: 600; margin-right: 5px;}
+        .website-link { font-size: 13px; color: var(--primary-blue); font-weight: bold; text-decoration: none;}
+
+        .back-footer {
+            font-size: 10px;
+            color: var(--text-gray);
+            border-top: 1px solid #f9f9f9;
+            padding-top: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 480px) {
+            :root { --card-width: 340px; --card-height: 200px; }
+            .name-zh { font-size: 20px; }
+            .logo-container img { height: 35px; }
+            .qr-block { width: 55px; height: 55px; top: 15px; right: 15px;}
+            .info-section, .back-details { font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-perspective" id="card" title="點擊翻面 Click to flip">
+        <div class="card-inner">
+            
+            <div class="card-face card-front">
+                <div class="logo-container">
+                    <img src="https://raw.githubusercontent.com/Sethjesus/PLC/main/UDM%20ESG.png" alt="UDM ESG Logo">
+                </div>
+                <div class="card-content">
+                    <div class="header-section">
+                        <div class="name-block">
+                            <span class="name-zh">陳祖旋</span>
+                            <span class="name-en">Sophia Chen</span>
+                        </div>
+                        <div class="title-block">
+                            <span>專案經理</span>
+                            <span style="font-style: italic;">Project Manager</span>
+                        </div>
+                    </div>
+                    <div class="divider-front"></div>
+                    <div class="info-section">
+                        <div class="info-row"><span class="label">電話 TEL</span><span>02-6620-2388<span class="ext">EXT. 17</span></span></div>
+                        <div class="info-row"><span class="label">行動 CELL</span><span>0952-577-925</span></div>
+                        <div class="info-row"><span class="label">Email</span><span>202.esg@udmgroup.com</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-face card-back">
+                <div>
+                    <div class="back-company-info">
+                        <div class="company-name-en-big">UDM ESG</div>
+                        <div class="company-name-zh">景煬科技股份有限公司</div>
+                    </div>
+                    <div class="qr-block">
+                        <img src="https://qrickit.com/api/qr.php?d=https://jpesg.netlify.app/&addtext=Web&txtcolor=000000" alt="QR">
+                    </div>
+                    <div class="back-details">
+                        <div style="margin-bottom: 8px;">
+                            <span class="label-b">地址 ADDR:</span><br>
+                            235 新北市中和區中正路 872 號 12 樓之 1<br>
+                            12F.-1, No. 872, Zhongzheng Rd., Zhonghe Dist., New Taipei City 235, Taiwan
+                        </div>
+                        <div><span class="label-b">傳真 FAX:</span>02-3320-2720</div>
+                        <div style="margin-top: 8px;">
+                            <span class="label-b">網址 WEB:</span>
+                            <a href="https://jpesg.netlify.app/" target="_blank" class="website-link">jpesg.netlify.app</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="back-footer">
+                    <span>統一編號 TAX ID: 00195374</span>
+                    <span>© UDM ESG</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('card').addEventListener('click', function() {
+            this.classList.toggle('flipped');
+        });
+    </script>
+</body>
+</html>
