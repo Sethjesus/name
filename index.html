@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Eva Lin Digital Card</title>
+    <style>
+        :root {
+            --primary-blue: #0b1e5b; 
+            --card-w: 420px;
+            --card-h: 260px;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'SF Pro TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .scene { width: var(--card-w); height: var(--card-h); perspective: 1200px; }
+        .card { width: 100%; height: 100%; position: relative; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            border-radius: 16px; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #ddd; padding: 20px 25px; display: flex; flex-direction: column;
+        }
+
+        /* 正面排版 */
+        .header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .logo { width: 110px; height: auto; }
+
+        .name-section { border-left: 4px solid #000; padding-left: 12px; margin: 12px 0 8px 0; }
+        .name-zh { font-size: 24px; font-weight: bold; color: #000; }
+        .name-en { font-size: 15px; color: #444; margin-left: 6px; }
+        .job { font-size: 13px; color: #666; margin-top: 2px; }
+
+        /* 聯絡資訊區：解決跑掉問題 */
+        .info-container { 
+            font-size: 11px; color: #333; line-height: 1.5; 
+            margin-top: 5px; /* 這裡拉上來了 */
+            display: flex; flex-direction: column; gap: 1px;
+        }
+        .info-row { display: flex; align-items: flex-start; }
+        .label { font-weight: bold; width: 32px; flex-shrink: 0; color: #000; }
+        .value { flex-grow: 1; }
+        .value a { text-decoration: none; color: inherit; }
+
+        /* QR Code 區域 */
+        .qr-area { position: absolute; bottom: 18px; right: 20px; text-align: center; width: 72px; }
+        .qr-area img { width: 100%; border: 1px solid #000; padding: 1px; border-radius: 3px; }
+        .hint { font-size: 8px; color: #999; margin-top: 3px; font-weight: bold; }
+
+        /* 反面排版 */
+        .card-back { transform: rotateY(180deg); padding: 15px 20px; }
+        .back-title { background: #f8f9fa; color: #000; padding: 6px 12px; font-size: 13px; font-weight: bold; border-left: 4px solid #000; margin-bottom: 8px; }
+        .services { font-size: 10.5px; color: #333; line-height: 1.4; }
+        .service-item { display: flex; margin-bottom: 3px; }
+        .service-item::before { content: "•"; margin-right: 6px; color: var(--primary-blue); font-weight: bold; }
+        .footer { margin-top: auto; font-size: 9px; color: #999; border-top: 1px solid #eee; padding-top: 5px; display: flex; justify-content: space-between; }
+
+        @media (max-width: 480px) { .scene { transform: scale(0.85); } }
+    </style>
+</head>
+<body>
+
+    <div class="scene">
+        <div class="card" id="card">
+            <div class="card-face card-front">
+                <div class="header">
+                    <img src="https://raw.githubusercontent.com/Sethjesus/PLC/main/UDM%20ESG.png" class="logo" alt="Logo">
+                </div>
+
+                <div class="name-section">
+                    <span class="name-zh">林詩婕</span>
+                    <span class="name-en">Eva Lin</span>
+                    <div class="job">行銷 | Marketing</div>
+                </div>
+
+                <div class="info-container">
+                    <div class="info-row"><div class="label">地址</div><div class="value">235 新北市中和區中正路 872 號 12 樓之 1</div></div>
+                    <div class="info-row"><div class="label">電話</div><div class="value">(02)6620-2388 EXT. 22 &nbsp;<b>傳真</b> (02)6620-2720</div></div>
+                    <div class="info-row"><div class="label">行動</div><div class="value"><a href="tel:0905576391">0905-576-391</a></div></div>
+                    <div class="info-row"><div class="label">Email</div><div class="value"><a href="mailto:301.esg@udmgroup.com">301.esg@udmgroup.com</a></div></div>
+                    <div class="info-row"><div class="label">網址</div><div class="value"><a href="http://www.udmgroup.com" style="color:var(--primary-blue); font-weight:bold;">www.udmgroup.com</a></div></div>
+                </div>
+
+                <div class="qr-area">
+                    <img src="https://qrickit.com/api/qr.php?d=https://jpesg.netlify.app/&addtext=Web&txtcolor=000000" alt="QR">
+                    <div class="hint">TAP TO FLIP</div>
+                </div>
+            </div>
+
+            <div class="card-face card-back">
+                <div class="back-title">ESG 減碳 / 低碳管理方案專業供應商</div>
+                <div class="services">
+                    <div class="service-item">淨零碳排專家諮詢輔導 (16+4)</div>
+                    <div class="service-item">自主碳盤查：專業委外代工服務 (ISO 14064-1)</div>
+                    <div class="service-item">減碳方案規劃與執行 (陽光、空氣、水)</div>
+                    <div class="service-item">管理科學實質減碳 (效益 3 年 30%)</div>
+                    <div class="service-item">環境部碳費優惠費率自主減碳計畫輔導申請</div>
+                    <div class="service-item">AIOT 能耗足跡軟硬體工具 (ISO 50001)</div>
+                    <div class="service-item">減碳能耗統計分析管理服務 EMS</div>
+                    <div class="service-item">政府低碳化補助申請 (產發署 / 商發署)</div>
+                    <div class="service-item">溫室氣體盤查與流程文件驗證輔導 (預查)</div>
+                    <div class="service-item">整合 ISO 查驗證服務 (14064-1 / 14067 / 50001)</div>
+                </div>
+                <div class="footer">
+                    <span>皓樣科技股份有限公司</span>
+                    <span>統編：13058638</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const card = document.getElementById('card');
+        card.addEventListener('click', function(e) {
+            if (e.target.tagName !== 'A' && e.target.parentNode.tagName !== 'A') {
+                this.classList.toggle('is-flipped');
+            }
+        });
+    </script>
+</body>
+</html>
